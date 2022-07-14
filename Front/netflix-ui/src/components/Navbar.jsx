@@ -6,11 +6,19 @@ import logo from "../assets/logo.png";
 import { firebaseAuth } from "../utils/firebase-config";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
 import styled from 'styled-components';
+import { onAuthStateChanged } from "firebase/auth";
+
+
+import { useNavigate } from "react-router-dom";
+
 
 const Container= styled.div`
 
 .scrolled {
-    background-color: black;
+ 
+  }
+  .notScrolled{
+    background-color: #1a1a1a;
   }
   nav {
     position: sticky;
@@ -38,7 +46,10 @@ const Container= styled.div`
           a {
             color: white;
             text-decoration: none;
+
+            
           }
+          
         }
       }
     }
@@ -52,8 +63,14 @@ const Container= styled.div`
           outline: none;
         }
         svg {
-          color: #f34242;
-          font-size: 1.2rem;
+          color: white;
+          font-size: 1.3rem;
+          &:hover {
+            color: red;
+            trnsform: scale(1.2);
+            transition: 0.2s ease-in-out;
+            }
+          
         }
       }
       .search {
@@ -102,6 +119,8 @@ const Container= styled.div`
 
 
 const Navbar = (isScrolled) => {
+  const navigate= useNavigate();
+
   const links=[{
     name: 'Home',
     link:'/'
@@ -119,11 +138,16 @@ const Navbar = (isScrolled) => {
     link:'/mylist'
   }]
 
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (! currentUser) navigate("/login");
+  })
+
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setInputHover] = useState(false);
   return (
     <Container>
-      <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
+      
+      <nav className={`${isScrolled ? "scrolled" : "notScrolled"} flex`}>
         <div className="left flex a-center">
           <div className="brand flex a-center j-center">
             <img src={logo} alt="Logo" />
@@ -161,7 +185,7 @@ const Navbar = (isScrolled) => {
               }}
             />
           </div>
-          <button onClick={() => signOut(firebaseAuth)}>
+          <button onClick={() => {signOut(firebaseAuth)}}>
             <FaPowerOff />
           </button>
         </div>
