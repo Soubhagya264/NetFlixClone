@@ -15,15 +15,16 @@ import { useNavigate } from "react-router-dom";
 const Container= styled.div`
 
 .scrolled {
+  background-color: black;
  
   }
   .notScrolled{
-    background-color: #1a1a1a;
+    background-color: none;
   }
   nav {
     position: sticky;
     top: 0;
-    height: 6.5rem;
+    height: 5.29rem;
     width: 100%;
     justify-content: space-between;
     position: fixed;
@@ -118,7 +119,7 @@ const Container= styled.div`
   `
 
 
-const Navbar = (isScrolled) => {
+const Navbar = ({isScrolled}) => {
   const navigate= useNavigate();
 
   const links=[{
@@ -144,6 +145,8 @@ const Navbar = (isScrolled) => {
 
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setInputHover] = useState(false);
+  console.log(isScrolled );
+  
   return (
     <Container>
       

@@ -5,8 +5,13 @@ import backgroundImage from "../assets/Home.png";
 import MovieLogo from "../assets/HomeTitle1.png";
 import {FaPlay} from 'react-icons/fa';
 import {AiOutlineInfoCircle} from 'react-icons/ai';
- import { useNavigate } from 'react-router-dom';
- import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import {useEffect} from 'react';
+import { getGenres } from '../store';
+
 
 
  const Container = styled.div`
@@ -64,10 +69,19 @@ import {AiOutlineInfoCircle} from 'react-icons/ai';
 
 const Netflix = () => {
     const [isScrolled, setIsScrolled] = useState(false);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getGenres());
+    }
+    , []);
+
     window.onscroll = () => {
       setIsScrolled(window.pageYOffset <1 ? false : true);
       return () => (window.onscroll = null);
     };
+    
     
     const navigate = useNavigate();
   return (
