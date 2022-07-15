@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {useEffect} from 'react';
 import { getGenres } from '../store';
+import { fetchMovies } from '../store';
 
 
 
@@ -71,11 +72,21 @@ const Netflix = () => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     const dispatch = useDispatch();
+    const genersLoaded = useSelector(
+        (state) => state.genres.genresLoaded
+    );
 
     useEffect(() => {
         dispatch(getGenres());
     }
     , []);
+
+    useEffect(() => {
+        if (genersLoaded) {
+            dispatch(fetchMovies());
+        }
+    }
+      )
 
     window.onscroll = () => {
       setIsScrolled(window.pageYOffset <1 ? false : true);
