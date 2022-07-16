@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {useState} from 'react';
 import Navbar from '../components/Navbar';
 import backgroundImage from "../assets/Home.png";
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import {useEffect} from 'react';
 import { getGenres } from '../store';
 import { fetchMovies } from '../store';
+import Slider from "../pages/Slider";
 
 
 
@@ -32,8 +33,8 @@ import { fetchMovies } from '../store';
       bottom: 5rem;
       .logo {
         img {
-          width: 45%;
-          height: 60%;
+          width: 40%;
+          height: 45%;
           margin-bottom: -5rem;
           margin-left: 2rem;
           filter: brightness(80%);
@@ -56,7 +57,7 @@ import { fetchMovies } from '../store';
             opacity: 0.8;
           }
           &:nth-of-type(2) {
-            background-color: rgba(109, 109, 110, 0.7);
+            background-color: rgba(109, 109, 110, 0.6);
             color: white;
             svg {
               font-size: 1.8rem;
@@ -72,9 +73,10 @@ const Netflix = () => {
     const [isScrolled, setIsScrolled] = useState(false);
 
     const dispatch = useDispatch();
-    const genersLoaded = useSelector(
-        (state) => state.genres.genresLoaded
-    );
+    const genresLoaded = useSelector((state) => state.netflix.genersLoaded);
+    const movies = useSelector((state) => state.netflix.movies);
+  const genres = useSelector((state) => state.netflix.genres);
+console.log(movies);
 
     useEffect(() => {
         dispatch(getGenres());
@@ -82,11 +84,10 @@ const Netflix = () => {
     , []);
 
     useEffect(() => {
-        if (genersLoaded) {
-            dispatch(fetchMovies());
-        }
-    }
-      )
+      if (genresLoaded) {
+        dispatch(fetchMovies({  type: "all" }));
+      }
+    }, [genresLoaded]);
 
     window.onscroll = () => {
       setIsScrolled(window.pageYOffset <1 ? false : true);
@@ -124,7 +125,7 @@ const Netflix = () => {
           </div>
         </div>
       </div>
-      {/* <Slider movies={movies} /> */}
+      <Slider movies={movies} />
     </Container>
   )
 }
